@@ -1,7 +1,3 @@
-/**
- * File Filter Utility (SRP - Single Responsibility)
- * Strategy Pattern: Different filtering strategies
- */
 import { FileItem } from '../../models/file-item';
 
 export interface IFileFilter {
@@ -34,9 +30,6 @@ export class FileFilter implements IFileFilter {
 	}
 }
 
-/**
- * File Filter Service using Strategy Pattern
- */
 export class FileFilterService {
 	private readonly folderFilter = new FolderFilter();
 	private readonly fileFilter = new FileFilter();

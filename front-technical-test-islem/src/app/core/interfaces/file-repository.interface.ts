@@ -1,7 +1,3 @@
-/**
- * Repository Pattern Interface (DIP - Dependency Inversion Principle)
- * High-level modules depend on abstractions, not concrete implementations
- */
 import { Observable } from 'rxjs';
 import { FileItem, UploadResponse } from '../../models/file-item';
 

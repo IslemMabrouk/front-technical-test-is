@@ -8,18 +8,12 @@ import { FileManagerService } from './file-manager.service';
 export class FileUploadService {
     constructor(private fileManager: FileManagerService) {}
 
-    /**
-     * Handles file drop events and uploads files
-     */
     handleDroppedFiles(files: FileList | File[], folderId?: string): Observable<void> {
         const fileArray = Array.from(files);
         return from(this.uploadFiles(fileArray, folderId));
     }
 
-    /**
-     * Validates dropped files
-     */
-    validateFiles(files: FileList | File[]): { valid: boolean; message?: string } {
+     validateFiles(files: FileList | File[]): { valid: boolean; message?: string } {
         const fileArray = Array.from(files);
         const totalSize = fileArray.reduce((acc, file) => acc + file.size, 0);
         
@@ -34,10 +28,7 @@ export class FileUploadService {
         return { valid: true };
     }
 
-    /**
-     * Uploads multiple files to the server
-     */
-    private async uploadFiles(files: File[], folderId?: string): Promise<void> {
+     private async uploadFiles(files: File[], folderId?: string): Promise<void> {
         // Using the existing FileManagerService for consistency
         await this.fileManager.uploadFiles(files, folderId).toPromise();
     }

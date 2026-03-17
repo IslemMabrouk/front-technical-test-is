@@ -1,7 +1,3 @@
-/**
- * File Validation Utility (SRP - Single Responsibility)
- * Handles all file validation logic
- */
 export interface ValidationResult {
 	valid: boolean;
 	message?: string;
@@ -26,7 +22,6 @@ export class FileValidationService {
 			};
 		}
 
-		// Check file sizes
 		const oversizedFiles = fileArray.filter(f => f.size > this.maxFileSize);
 		if (oversizedFiles.length > 0) {
 			return {
@@ -35,7 +30,6 @@ export class FileValidationService {
 			};
 		}
 
-		// Check file extensions
 		const invalidFiles = fileArray.filter(f => !this.hasValidExtension(f.name));
 		if (invalidFiles.length > 0) {
 			return {

@@ -1,19 +1,3 @@
-/**
- * PRESENTATIONAL COMPONENT (Dumb Component)
- * SRP: Single responsibility - Pure UI rendering
- * 
- * Responsibilities:
- * - Receives data via @Input()
- * - Emits events via @Output()
- * - Pure rendering logic
- * - UI interactions
- * 
- * Does NOT:
- * - Call services directly
- * - Manage complex state
- * - Perform business logic
- * - Make HTTP calls
- */
 import {
 	Component,
 	Input,
@@ -45,8 +29,8 @@ import {
 		DragDropModule,
 	],
 	templateUrl: './file-list-presentational.component.html',
-	styleUrls: ['./file-list.component.scss'],
-	changeDetection: ChangeDetectionStrategy.OnPush, // Performance optimization
+	styleUrls: ['./file-list-presentational.component.scss'],
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FileListPresentationalComponent {
 	private readonly fileTypeService = inject(FileTypeService);
@@ -111,7 +95,6 @@ export class FileListPresentationalComponent {
 		return !!container && !!relatedTarget && container === relatedTarget;
 	}
 
-	// Pure UI helper methods
 	getFolders(): FileItem[] {
 		if (!this.items) return [];
 		return this.items

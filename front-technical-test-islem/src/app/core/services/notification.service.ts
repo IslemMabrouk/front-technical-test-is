@@ -1,7 +1,3 @@
-/**
- * Notification Service (SRP - Single Responsibility)
- * Handles user notifications consistently
- */
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 

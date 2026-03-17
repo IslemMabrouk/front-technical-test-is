@@ -1,7 +1,3 @@
-/**
- * Error Handler Service (SRP - Single Responsibility)
- * Handles all error scenarios consistently
- */
 import { Injectable } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';

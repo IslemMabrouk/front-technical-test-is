@@ -7,6 +7,6 @@ import { RouterModule } from '@angular/router';
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss',
 	standalone: true,
-	changeDetection: ChangeDetectionStrategy.OnPush, // 🚀 Performance optimization
+	changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {}

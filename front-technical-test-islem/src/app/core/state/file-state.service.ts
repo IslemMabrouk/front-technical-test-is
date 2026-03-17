@@ -1,8 +1,3 @@
-/**
- * State Management Service (Observer Pattern)
- * SRP: Single responsibility - Manage application state for files
- * Centralizes state management using BehaviorSubject
- */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, distinctUntilChanged, map } from 'rxjs';
 import { FileItem } from '../../models/file-item';
@@ -31,7 +26,6 @@ const initialState: FileState = {
 export class FileStateService {
 	private readonly state$ = new BehaviorSubject<FileState>(initialState);
 
-	// Expose state as observables (ISP - Interface Segregation)
 	readonly items$: Observable<FileItem[]> = this.state$.pipe(
 		map(state => state.items),
 		distinctUntilChanged()

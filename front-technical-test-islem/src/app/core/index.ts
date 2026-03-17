@@ -1,6 +1,3 @@
-// Barrel exports for core module (OCP - Open/Closed Principle)
-// Makes imports cleaner and manages dependencies in one place
-
 // Interfaces
 export * from './interfaces/file-repository.interface';
 

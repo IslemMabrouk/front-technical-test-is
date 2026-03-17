@@ -13,70 +13,9 @@ import { CommonModule } from '@angular/common';
 	selector: 'app-drop-zone',
 	standalone: true,
 	imports: [CommonModule],
-	changeDetection: ChangeDetectionStrategy.OnPush, // 🚀 Performance optimization
-	template: `
-		<div class="drop-zone" [class.active]="isDragging">
-			<div class="drop-zone-content">
-				<i class="material-icons">upload_file</i>
-				<p>Drag and drop files here</p>
-				<p class="sub-text">or click to select files</p>
-			</div>
-			<input
-				#fileInput
-				type="file"
-				multiple
-				(change)="onFileSelected($event)"
-				style="display: none" />
-		</div>
-	`,
-	styles: [
-		`
-			.drop-zone {
-				width: 100%;
-				min-height: 200px;
-				border: 2px dashed #dadce0;
-				border-radius: 8px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				transition: all 0.3s ease;
-				background-color: #f8f9fa;
-				cursor: pointer;
-
-				&.active {
-					border-color: #1a73e8;
-					background-color: rgba(26, 115, 232, 0.05);
-				}
-
-				&:hover {
-					border-color: #1a73e8;
-					background-color: rgba(26, 115, 232, 0.02);
-				}
-			}
-
-			.drop-zone-content {
-				text-align: center;
-				color: #5f6368;
-
-				i {
-					font-size: 48px;
-					margin-bottom: 16px;
-					color: #1a73e8;
-				}
-
-				p {
-					margin: 0;
-					font-size: 16px;
-
-					&.sub-text {
-						font-size: 14px;
-						margin-top: 8px;
-						color: #80868b;
-					}
-				}
-			}
-		`,
-	],
+	changeDetection: ChangeDetectionStrategy.OnPush,
+	templateUrl: './drop-zone.component.html',
+	styleUrls: ['./drop-zone.component.scss']
 })
 export class DropZoneComponent {
 	@Input() acceptedFileTypes?: string[];

@@ -1,7 +1,3 @@
-/**
- * Dialog Service (SRP - Single Responsibility)
- * Handles all user input dialogs
- */
 import { Injectable, ApplicationRef, createComponent, EnvironmentInjector } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { ModalComponent } from '../../shared/modal/modal.component';
@@ -50,10 +46,7 @@ export class DialogService {
 		return subject.asObservable();
 	}
 
-	/**
-	 * Show prompt dialog for text input
-	 */
-	prompt(message: string, defaultValue = '', title = 'Input Required'): Observable<string | null> {
+prompt(message: string, defaultValue = '', title = 'Input Required'): Observable<string | null> {
 		const subject = new Subject<string | null>();
 		const modalRef = this.createModal();
 		const modal = modalRef.instance;
@@ -81,10 +74,7 @@ export class DialogService {
 		return subject.asObservable();
 	}
 
-	/**
-	 * Show delete confirmation with item name
-	 */
-	confirmDelete(itemName: string): Observable<boolean> {
+confirmDelete(itemName: string): Observable<boolean> {
 		const subject = new Subject<boolean>();
 		const modalRef = this.createModal();
 		const modal = modalRef.instance;
@@ -112,17 +102,11 @@ export class DialogService {
 		return subject.asObservable();
 	}
 
-	/**
-	 * Show rename dialog
-	 */
-	promptRename(currentName: string): Observable<string | null> {
+promptRename(currentName: string): Observable<string | null> {
 		return this.prompt('Enter the new name for this item:', currentName, 'Rename Item');
 	}
 
-	/**
-	 * Show create folder dialog
-	 */
-	promptCreateFolder(): Observable<string | null> {
+promptCreateFolder(): Observable<string | null> {
 		return this.prompt('Enter a name for the new folder:', '', 'Create Folder');
 	}
 

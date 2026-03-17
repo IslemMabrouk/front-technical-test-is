@@ -1,0 +1,60 @@
+<div class="drive-layout">
+    <app-sidebar [currentFolderId]="currentFolderId" [folders]="(rootItems$ | async) ?? []"
+        (createFolder)="showCreateFolderDialog()" (uploadFiles)="onFilesSelected($event)"
+        (uploadFolder)="onFolderSelected($event)" (folderSelect)="navigateToFolder($event)">
+    </app-sidebar>
+
+    <main class="content w-100">
+        <app-breadcrumb *ngIf="currentPath$ | async as path" [path]="path" (navigate)="navigateToFolder($event)">
+        </app-breadcrumb>
+
+        <div class="files-container" cdkDropList (cdkDropListDropped)="handleDroppedFiles($event.item.data)"
+            [cdkDropListData]="[]">
+            <!-- Drag overlay -->
+            <div *ngIf="isDraggingFile" class="drag-overlay">
+                <div class="drag-message">
+                    <i class="material-icons">upload_file</i>
+                    <p>Drop files here to upload</p>
+                </div>
+            </div>
+
+            <!-- Loading indicator -->
+            <div *ngIf="isUploading" class="upload-overlay">
+                <div class="upload-progress">
+                    <i class="material-icons rotating">sync</i>
+                    <p>Uploading files...</p>
+                </div>
+            </div>
+
+            <ng-container *ngIf="items$ | async as items">
+                <section class="section-folders" *ngIf="getFolders(items).length > 0">
+                    <h2 class="section-title">Folders</h2>
+                    <div class="files-grid">
+                        <app-file-card *ngFor="let folder of getFolders(items)" [file]="folder"
+                            [fileTypeInfo]="getFileTypeInfo(folder)" [previewUrl]="null"
+                            (fileClick)="onItemClick($event)" (rename)="showRenameDialog($event)"
+                            (delete)="deleteItem($event)">
+                        </app-file-card>
+                    </div>
+                </section>
+
+                <section class="section-files" *ngIf="getFiles(items).length > 0">
+                    <h2 class="section-title">Files</h2>
+                    <div class="files-grid">
+                        <app-file-card *ngFor="let file of getFiles(items)" [file]="file"
+                            [fileTypeInfo]="getFileTypeInfo(file)" [previewUrl]="getFilePreviewUrl(file)"
+                            (fileClick)="onItemClick($event)" (download)="downloadFile($event)"
+                            (rename)="showRenameDialog($event)" (delete)="deleteItem($event)">
+                        </app-file-card>
+                    </div>
+                </section>
+
+                <div *ngIf="items.length === 0" class="empty-state">
+                    <i class="material-icons">upload_file</i>
+                    <p>Drag and drop files here</p>
+                    <p class="sub-text">or use the sidebar to upload</p>
+                </div>
+            </ng-container>
+        </div>
+    </main>
+</div>

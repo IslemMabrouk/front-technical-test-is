@@ -1,8 +1,3 @@
-/**
- * Concrete implementation of IFileRepository (Repository Pattern)
- * SRP: Single responsibility - HTTP communication with file API
- * OCP: Open for extension (can create other repos like LocalStorageRepository), closed for modification
- */
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';

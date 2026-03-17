@@ -13,40 +13,7 @@ interface FileTypeInfo {
   selector: 'app-file-card',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <div class="card" [class.card-folder]="file.folder" (click)="onClick(file)">
-      <div class="card-preview" [style.backgroundColor]="fileTypeInfo.color + '15'">
-        <!-- Image Preview -->
-        @if (previewUrl) {
-          <img [src]="previewUrl" [alt]="file.name" class="card-preview-image">
-        }
-        <!-- Icon Fallback -->
-        @if (!previewUrl) {
-          <span class="material-symbols-outlined card-icon icon-filled" [style.color]="fileTypeInfo.color">
-            {{ fileTypeInfo.icon }}
-          </span>
-        }
-      </div>
-
-      <div class="card-content">
-        <h3 class="card-title">{{ file.name }}</h3>
-        <p class="card-meta" *ngIf="!file.folder">{{ file.mimeType }}</p>
-        <p class="card-date">{{ file.modification | date:'MMM d, y' }}</p>
-      </div>
-
-      <div class="card-actions">
-        <button class="card-action-btn" *ngIf="!file.folder" (click)="onDownload($event, file)" title="Download">
-          <span class="material-symbols-outlined">download</span>
-        </button>
-        <button class="card-action-btn" (click)="onRename($event, file)" title="Rename">
-          <span class="material-symbols-outlined">edit</span>
-        </button>
-        <button class="card-action-btn card-action-btn-danger" (click)="onDelete($event, file)" title="Delete">
-          <span class="material-symbols-outlined">delete</span>
-        </button>
-      </div>
-    </div>
-  `,
+  templateUrl: './file-card.component.html',
   styleUrls: ['./file-card.component.scss']
 })
 export class FileCardComponent {

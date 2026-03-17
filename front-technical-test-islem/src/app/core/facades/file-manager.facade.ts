@@ -1,21 +1,3 @@
-/**
- * Facade Pattern - Orchestrates complex operations
- * SRP: Single responsibility - Business logic orchestration
- * DIP: Depends on abstraction (IFileRepository) not concretion
- * 
- * This facade provides a simplified interface to complex subsystems:
- * - Repository (data access)
- * - State management
- * - Error handling
- * - Notifications
- * 
- * RxJS Best Practices Applied:
- * - shareReplay for multicasting
- * - Proper error handling with catchError
- * - Side effects in tap, not map
- * - Avoid nested subscriptions
- * - Use switchMap for dependent operations
- */
 import { Injectable, inject } from '@angular/core';
 import {
 	Observable,
@@ -54,10 +36,6 @@ export class FileManagerFacade {
 	readonly isLoading$ = this.state.isLoading$;
 	readonly isUploading$ = this.state.isUploading$;
 
-	/**
-	 * Load items for a specific folder
-	 * RxJS Best Practice: Use shareReplay(1) to avoid multiple API calls
-	 */
 	loadItems(folderId?: string): Observable<FileItem[]> {
 		this.state.setLoading(true);
 		this.state.setError(null);
@@ -77,13 +55,11 @@ export class FileManagerFacade {
 				return of([]);
 			}),
 			finalize(() => this.state.setLoading(false)),
-			shareReplay({ bufferSize: 1, refCount: true }) // 🚀 Optimized shareReplay
+			shareReplay({ bufferSize: 1, refCount: true })
 		);
 	}
 
-	/**
-	 * Load breadcrumb path for current folder
-	 */
+
 	loadBreadcrumbPath(folderId: string | null): Observable<FileItem[]> {
 		if (!folderId) {
 			this.state.setBreadcrumbPath([]);
@@ -101,13 +77,7 @@ export class FileManagerFacade {
 		);
 	}
 
-	/**
-	 * Upload multiple files with validation
-	 * RxJS Best Practice: Use switchMap to avoid nested subscriptions
-	 * ✅ Validation logic in service layer
-	 */
 	uploadFiles(files: File[], parentId?: string): Observable<boolean> {
-		// ✅ Validation in service layer
 		const validation = this.fileValidation.validateFiles(files);
 		if (!validation.valid) {
 			this.notifications.error(validation.message || 'Invalid files');
@@ -122,7 +92,6 @@ export class FileManagerFacade {
 					`${files.length} file(s) uploaded successfully`
 				);
 			}),
-			// 🚀 Use switchMap instead of nested subscribe
 			switchMap(() => this.loadItems(parentId)),
 			map(() => true),
 			catchError(error => {
@@ -136,16 +105,10 @@ export class FileManagerFacade {
 		);
 	}
 
-	/**
-	 * Create a new folder with validation
-	 * RxJS Best Practice: Use switchMap to chain dependent operations
-	 * ✅ Validation logic in service layer
-	 */
-	createFolder(
+createFolder(
 		name: string,
 		parentId?: string
 	): Observable<FileItem | null> {
-		// ✅ Validation in service layer
 		const validation = this.fileValidation.isValidFileName(name);
 		if (!validation.valid) {
 			this.notifications.error(validation.message || 'Invalid folder name');
@@ -160,7 +123,6 @@ export class FileManagerFacade {
 					`Folder "${name}" created successfully`
 				);
 			}),
-			// 🚀 Chain operations with switchMap
 			switchMap(response =>
 				this.loadItems(parentId).pipe(map(() => response.item))
 			),
@@ -175,10 +137,6 @@ export class FileManagerFacade {
 		);
 	}
 
-	/**
-	 * Delete an item (file or folder)
-	 * RxJS Best Practice: Use currentFolderId$ observable instead of accessing state directly
-	 */
 	deleteItem(itemId: string, itemName: string): Observable<boolean> {
 		this.state.setLoading(true);
 
@@ -186,7 +144,6 @@ export class FileManagerFacade {
 			tap(() => {
 				this.notifications.success(`"${itemName}" deleted successfully`);
 			}),
-			// 🚀 Use observable state, not direct state access
 			switchMap(() =>
 				this.currentFolderId$.pipe(
 					take(1),
@@ -207,17 +164,11 @@ export class FileManagerFacade {
 		);
 	}
 
-	/**
-	 * Rename an item with validation
-	 * RxJS Best Practice: Chain operations declaratively
-	 * ✅ Validation logic in service layer
-	 */
-	renameItem(
+renameItem(
 		itemId: string,
 		oldName: string,
 		newName: string
 	): Observable<FileItem | null> {
-		// ✅ Validation in service layer
 		const validation = this.fileValidation.isValidFileName(newName);
 		if (!validation.valid) {
 			this.notifications.error(validation.message || 'Invalid name');
@@ -234,7 +185,6 @@ export class FileManagerFacade {
 			tap(() => {
 				this.notifications.success(`Renamed "${oldName}" to "${newName}"`);
 			}),
-			// 🚀 Declarative approach with observables
 			switchMap(updatedItem =>
 				this.currentFolderId$.pipe(
 					take(1),
@@ -255,10 +205,7 @@ export class FileManagerFacade {
 		);
 	}
 
-	/**
-	 * Download a file
-	 */
-	downloadFile(itemId: string, fileName: string): Observable<boolean> {
+downloadFile(itemId: string, fileName: string): Observable<boolean> {
 		return this.repository.downloadFile(itemId).pipe(
 			tap(blob => {
 				const url = window.URL.createObjectURL(blob);
@@ -280,11 +227,7 @@ export class FileManagerFacade {
 		);
 	}
 
-	/**
-	 * Get root folders for sidebar
-	 * RxJS Best Practice: shareReplay with refCount for proper cleanup
-	 */
-	getRootFolders(): Observable<FileItem[]> {
+getRootFolders(): Observable<FileItem[]> {
 		return this.repository.getItems().pipe(
 			map(response =>
 				response.items.filter(item => item.folder && item.parentId === null)
