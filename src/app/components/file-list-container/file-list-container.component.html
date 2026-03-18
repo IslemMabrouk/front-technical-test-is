@@ -1,0 +1,8 @@
+<app-file-list-presentational [items]="items$ | async" [breadcrumbPath]="breadcrumbPath$ | async"
+    [rootFolders]="rootFolders$ | async" [currentFolderId]="currentFolderId$ | async" [isLoading]="isLoading$ | async"
+    [isUploading]="isUploading$ | async" [isDraggingFile]="isDraggingFile" (itemClick)="onItemClick($event)"
+    (filesUpload)="onFilesUpload($event)" (folderUpload)="onFolderUpload($event)"
+    (filesDropped)="onFilesDropped($event)" (createFolder)="onCreateFolder()" (deleteItem)="onDeleteItem($event)"
+    (renameItem)="onRenameItem($event)" (downloadFile)="onDownloadFile($event)"
+    (navigateToFolder)="navigateToFolder($event)" (dragStateChange)="onDragStateChange($event)">
+</app-file-list-presentational>
