@@ -1,8 +1,0 @@
-<div class="drop-zone" [class.active]="isDragging">
-    <div class="drop-zone-content">
-        <i class="material-icons">upload_file</i>
-        <p>Drag and drop files here</p>
-        <p class="sub-text">or click to select files</p>
-    </div>
-    <input #fileInput type="file" multiple (change)="onFileSelected($event)" style="display: none" />
-</div>
